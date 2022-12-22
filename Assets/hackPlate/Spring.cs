@@ -190,7 +190,7 @@ public class Spring : BaseSpring
     }
 }
 
-
+[System.Serializable]
 public class SpringVector3 : BaseSpring
 {
 

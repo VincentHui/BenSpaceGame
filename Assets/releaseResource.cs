@@ -12,22 +12,22 @@ public class releaseResource : ParticleBulletPoolBase
         MakePool(10);
         gameObject.SubscribeBroker<MinableCollisionInfo>("MINABLE_COLLISION", (obj) => {
 
-
-            //for (int i = 0; i < 10; i++)
-            //{
             if (!pool.CanGetFromPool) return;
             var particle = Spawn();
             particle.bulletObject.transform.position = obj.What.hit.point;
+            var pos = particle.bulletObject.transform.position;
             //particle.bulletObject.transform.localScale *= Random.Range(0.2f, 1.4f);
             //var speed = Random.Range(0.001f, 0.09f);
             var normal = obj.What.hit.normal;
             normal.y = 0;
             normal.Normalize();
                 
-
             var newDirection = Quaternion.AngleAxis(Random.Range(-20f, 20f), Vector3.up) * normal;
-            particle.bulletObject.GetComponent<steerable>().AddConsumableSteeringAction((body)=> newDirection * releaseImpulse);
-            //}
+            particle.bulletObject.AddToGlobalUpdater(() => { }, (t) => {
+                
+                particle.bulletObject.transform.position = pos.LerpDuration(pos + normal *1f,t, 1f);
+            }, () => { }, 1f);
+
         });
     }
 

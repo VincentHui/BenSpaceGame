@@ -17,13 +17,18 @@ public static class poolExtensions {
 
         }, poolAmount);
     }
+    public static List<T> swapLists<T>(this List<T> from, List<T> to)
+    {
+        return ObjectPool<T>.swapLists(from, to);
+    }
 }
 [System.Serializable]
-public class ObjectPool<T>
+public class ObjectPool<T> : IEnumerable<T>
 {
     public List<T> Active = new List<T>();
     public List<T> Inactive = new List<T>();
     public bool CanGetFromPool { get { return Inactive.Count > 0; } }
+    public readonly int count;
 
     public T GetFromPool()
     {
@@ -38,6 +43,13 @@ public class ObjectPool<T>
     public void ReturnToPool(int index)
     {
         moveBetweenLists(Active, Inactive, index);
+    }
+
+    public static List<T> swapLists<T>(List<T> from, List<T> to) {
+        var selected = from.ToList();
+        selected.ForEach(item => from.Remove(item));
+        to.AddRange(selected);
+        return to;
     }
 
     public static T  moveBetweenLists<T>(List<T> from, List<T> to, int index =0)
@@ -55,8 +67,27 @@ public class ObjectPool<T>
         return toRemove;
     }
 
+    public IEnumerator<T> GetInactiveAndWake()
+    {
+        return GetEnumerator();
+    }
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        for (int i = count; i > 0; i--)
+        {
+            yield return GetFromPool();
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
     public ObjectPool(Func<T> construct, int poolAmount = 10)
     {
+        count = poolAmount;
         for (int i = 0; i < poolAmount; i++)
         {
             Inactive.Add(construct());

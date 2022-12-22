@@ -11435,7 +11435,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 874999131}
   - {fileID: 1408279927}
@@ -11755,6 +11755,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 32498613}
+  positionSpring:
+    mass: 1
+    tension: 1
+    friction: 1
+    state: 0
+    target: {x: 0, y: 0, z: 0}
+    position: {x: 0, y: 0, z: 0}
 --- !u!1 &1308090920
 GameObject:
   m_ObjectHideFlags: 0
@@ -17165,6 +17172,54 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: c4742aa4fc09a4d608749f3cd0159f83, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bcd44f8d0f766b340b72d555a8df8a72, type: 3}
+--- !u!1 &1790637598
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1790637601}
+  - component: {fileID: 1790637602}
+  m_Layer: 0
+  m_Name: rope
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1790637601
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1790637598}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 20
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1790637602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1790637598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 366de8e007da24c3cac22bed01b7bc2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  A: {fileID: 32498613}
+  B: {fileID: 1977397796}
+  particle: {fileID: 100232238}
+  amount: 10
 --- !u!1001 &1832615549
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17472,7 +17527,7 @@ GameObject:
   - component: {fileID: 1977397796}
   - component: {fileID: 1977397794}
   - component: {fileID: 1977397793}
-  - component: {fileID: 1977397797}
+  - component: {fileID: 1977397798}
   m_Layer: 0
   m_Name: CollectibleMineral
   m_TagString: Untagged
@@ -17538,14 +17593,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1977397792}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.0046146, y: 0, z: -2.83}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalPosition: {x: 0, y: 0, z: -7.9}
+  m_LocalScale: {x: 0.73, y: 0.73, z: 0.73}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1977397797
+--- !u!114 &1977397798
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -17554,22 +17609,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1977397792}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b417cff8f3b21f74aa8e87a1f9653ae0, type: 3}
+  m_Script: {fileID: 11500000, guid: d2e68b8d9c1aa49fd8cedb2c32f23789, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 2
-  mass: 1
-  MaxForce: 0.7
-  drag: 1.5
-  Rotate: 1
-  RotationSlerpValue: 0.05
-  collideWith:
-    serializedVersion: 2
-    m_Bits: 0
-  OnCollide:
-    m_PersistentCalls:
-      m_Calls: []
-  SkinWidth: 0
+  toFollow: {fileID: 32498610}
+  spring:
+    mass: 4
+    tension: 10
+    friction: 0.15
+    state: 0
+    target: {x: 0, y: 0, z: 0}
+    position: {x: 0, y: 0, z: 0}
+  radius: 7
 --- !u!1 &1981102190
 GameObject:
   m_ObjectHideFlags: 0
