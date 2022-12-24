@@ -197,6 +197,7 @@ public class SpringVector3 : BaseSpring
     public Vector3 target = new Vector3();
     public Vector3 position = new Vector3();
     private Vector3 velocity = new Vector3();
+    public Vector3 Velocity { get{ return velocity; } }
 
     public Action<SpringVector3> callback = (pos) => { };
 
@@ -215,5 +216,37 @@ public class SpringVector3 : BaseSpring
         velocity = velocity + acceleration;
         position = position + velocity * delta;
         callback(this);
+    }
+}
+
+[System.Serializable]
+public class SpringImpulseVector3 : BaseSpring
+{
+
+    public Vector3 target = new Vector3();
+    public Vector3 position = new Vector3();
+    private Vector3 velocity = new Vector3();
+    public Vector3 Velocity { get { return velocity; } }
+    private Vector3 force = new Vector3();
+    public Vector3 Force { get { return force; } }
+
+    public override void update(float delta)
+    {
+        if (state == SpringState.DELETE)
+        {
+            return;
+        }
+        if (target == position)
+        {
+            return;
+        }
+        force = Vector3.zero;
+        force = -tension * (position - target);
+        Vector3 damping = -friction * velocity;
+        Vector3 acceleration = (force + damping) / mass;
+
+        velocity = velocity + acceleration;
+        position = position + velocity * delta;
+        //callback(this);
     }
 }

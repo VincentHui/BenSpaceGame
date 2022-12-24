@@ -27,7 +27,7 @@ public class tractorBeam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var dist = Vector3.Distance(A.position, B.position);
+        //var dist = Vector3.Distance(A.position, B.position);
         for (int i = 0; i < amount; i++)
         {
             var particleObj = active[i];
