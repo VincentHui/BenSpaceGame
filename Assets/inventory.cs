@@ -5,16 +5,16 @@ using UnityEngine;
 
 
 public static class inventoryExtenstions {
-    public static void addInventory(this GameObject obj, string name, int amount) {
+    public static void addInventory(this GameObject obj, string name, int amount, Action Effect = null) {
         var _inventory = obj.GetComponent<inventory>();
         if (_inventory == false) {
             Debug.Log("no inventory");
             return;
         }
 
-        _inventory._inventory = Merchant.buy(
-            new Buyable { Cost = new Dictionary<string, int>() {[name]=amount } },
-            _inventory._inventory);
+        //_inventory._inventory = Merchant.buy(
+        //    new Buyable { Cost = new Dictionary<string, InventoryValue>() {[name] = {value=amount, Effect =Effect} } },
+        //    _inventory._inventory);
 
     }
 
@@ -28,19 +28,20 @@ public static class inventoryExtenstions {
     }
 
     public static void startTransaction(this GameObject obj,
-        Dictionary<string, int> values,
+        Dictionary<string, InventoryValue> values,
         GameObject from,
         GameObject to) {
 
-        var newValues = Merchant.transfer(
-            to.getInventory(),
-            from.getInventory(),
-            values);
+        //var newValues = Merchant.transfer(
+        //    to.getInventory(),
+        //    from.getInventory(),
+        //    values);
 
-        to.setInventory(newValues.to);
-        from.setInventory(newValues.from);
+        //to.setInventory(newValues.to);
+        //from.setInventory(newValues.from);
     }
 }
+
 
 
 public class inventory : MonoBehaviour, ISerializationCallbackReceiver

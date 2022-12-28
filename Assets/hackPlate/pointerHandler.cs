@@ -13,37 +13,37 @@ public enum pointerState {
 
 public class pointerHandler : MonoBehaviour
 {
-    CustomStandaloneInputModule inputmodule;
+    //CustomStandaloneInputModule inputmodule;
     public pointerState state = pointerState.None;
     public void Start()
     {
-        inputmodule = EventSystem.current.GetComponent<CustomStandaloneInputModule>();
+        //inputmodule = EventSystem.current.GetComponent<CustomStandaloneInputModule>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        var hovered = inputmodule.GetHovered() == gameObject;
-        if (!hovered) {
+        //var hovered = inputmodule.GetHovered() == gameObject;
+        //if (!hovered) {
 
-            if (state != pointerState.None) gameObject.PublishBroker("EXIT");
-            state = pointerState.None;
-            return;
-        }
-        if (inputmodule.GetPointerPress())
-        {
-            //if (state != pointerState.Hover) gameObject.PublishBroker("ENTER");
-            state = pointerState.PointerDown;
-            gameObject.PublishBroker("POINTER_DOWN");
-            return;
-        }
-        if (hovered)
-        {
-            if (state != pointerState.Hover) gameObject.PublishBroker("ENTER");
-            state = pointerState.Hover;
-            gameObject.PublishBroker("HOVER");
-            return;
-        }
+        //    if (state != pointerState.None) gameObject.PublishBroker("EXIT");
+        //    state = pointerState.None;
+        //    return;
+        //}
+        //if (inputmodule.GetPointerPress())
+        //{
+        //    //if (state != pointerState.Hover) gameObject.PublishBroker("ENTER");
+        //    state = pointerState.PointerDown;
+        //    gameObject.PublishBroker("POINTER_DOWN");
+        //    return;
+        //}
+        //if (hovered)
+        //{
+        //    if (state != pointerState.Hover) gameObject.PublishBroker("ENTER");
+        //    state = pointerState.Hover;
+        //    gameObject.PublishBroker("HOVER");
+        //    return;
+        //}
 
 
 

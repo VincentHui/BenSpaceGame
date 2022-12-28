@@ -15,27 +15,20 @@ public class rigidBodyFollower : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody>();
         spring.position = transform.position;
-        spring.target = toFollow.transform.position;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (toFollow == null)
+            return;
         var distance = Vector3.Distance(toFollow.transform.position, transform.position);
         var direction = (toFollow.transform.position - transform.position).normalized;
         spring.target = toFollow.transform.position;
         spring.position = rigidBody.position;
         spring.tension = Mathf.Max(distance - radius, 0) / radius;
         spring.update(Time.deltaTime);
-        //rigidBody.MovePosition(spring.position);
-        //if (spring.tension == 0) { Debug.Log(spring.Force); }
-
-        //rigidBody.AddForce(spring.Force);
         rigidBody.velocity = spring.Velocity;
-        //if (distance > radius)
-        //{
-        //    rigidBody.AddForce(spring.Force);
-        //}
 
     }
 }

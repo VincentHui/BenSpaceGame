@@ -1,10 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 [System.Serializable]
-public struct resourceSlot { public string key; public int value ; }
+public struct InventoryValue {
+    public int value;
+    public Action Effect; 
+};
+
+[System.Serializable]
+public struct resourceSlot { public string key; public int value; }
 
 
 public class populateInventoryOnStart : MonoBehaviour
@@ -14,10 +21,10 @@ public class populateInventoryOnStart : MonoBehaviour
     void Start()
     {
         var newWallet = new Dictionary<string, int>();
-        foreach (var slot in initialValues) {
-            newWallet.Add( slot.key, slot.value);
-        }
-        gameObject.setInventory(newWallet);
+        //foreach (var slot in initialValues) {
+        //    newWallet.Add( slot.key, slot.value);
+        //}
+        //gameObject.setInventory(newWallet);
     }
 
     // Update is called once per frame

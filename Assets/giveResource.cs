@@ -58,7 +58,7 @@ public class giveResource : MonoBehaviour
             timeElapsed = 0;
             newMineral.SetActive(false);
 
-            gameObject.startTransaction(new Dictionary<string, int>() { [nameOfResource]=1 }, gameObject, selector);
+            //gameObject.startTransaction(new Dictionary<string, InventoryValue>() { [nameOfResource]=1 }, gameObject, selector);
 
             selector = null;
         }

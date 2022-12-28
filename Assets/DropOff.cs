@@ -11,15 +11,15 @@ public class DropOff : MonoBehaviour
     {
         gameObject.SubscribeBroker<GameObject>("SELECT", (sender) => {
             selector = sender.What;
-            if (Merchant.isWalletsEmpty(
-                new Dictionary<string, int>[] { selector.getInventory() })
-            ) {
-                return;
-            }
-            gameObject.startTransaction(
-                selector.getInventory(),
-                selector,
-                gameObject);
+            //if (Merchant.isWalletsEmpty(
+            //    new Dictionary<string, int>[] { selector.getInventory() })
+            //) {
+            //    return;
+            //}
+            //gameObject.startTransaction(
+            //    selector.getInventory(),
+            //    selector,
+            //    gameObject);
 
         });
     }

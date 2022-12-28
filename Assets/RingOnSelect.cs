@@ -2,6 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public static class RingExtensions {
+
+    public static IEnumerable<Vector3> GetPointsOnCircle(this GameObject obj, int numSegments, float radius) {
+        float deltaTheta = (float)(2.0 * Mathf.PI) / numSegments;
+        float theta = 0f;
+        var list = new List<Vector3>();
+        for (int i = 0; i < numSegments + 1; i++)
+        {
+            float x = obj.transform.position.x + radius * Mathf.Cos(theta);
+            float z = obj.transform.position.z + radius * Mathf.Sin(theta);
+            Vector3 pos = new Vector3(x, 0, z);
+            list.Add(pos);
+            theta += deltaTheta;
+        }
+        return list;
+    }
+}
+
 public class RingOnSelect : MonoBehaviour
 {
     Spring radiusSpring;
