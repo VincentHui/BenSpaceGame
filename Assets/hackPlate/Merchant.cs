@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 
+[System.Serializable]
 public struct Item<InputState>
 {
     public string Type;

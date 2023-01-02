@@ -80,6 +80,10 @@ public class steerableBase : MonoBehaviour {
     {
         actionMap.Add(p_name, p_getforce);
     }
+    public void RemoveSteeringAction(string p_name)
+    {
+        actionMap.Remove(p_name);
+    }
     public void AddConsumableSteeringAction(getForce p_getforce)
     {
         ConsumableActionMap.Add(p_getforce);

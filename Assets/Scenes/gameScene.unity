@@ -141,6 +141,7 @@ GameObject:
   - component: {fileID: 32498621}
   - component: {fileID: 32498622}
   - component: {fileID: 32498624}
+  - component: {fileID: 32498625}
   m_Layer: 0
   m_Name: spaceShip
   m_TagString: Untagged
@@ -233,6 +234,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6fbe0e66ccfd40ef8b9cd476aa5b47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attached: []
+  AttachKey: 32
+  DettachKey: 8
 --- !u!114 &32498617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,7 +261,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8fa6af32bc684acd86a99f9a4c4c895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resources: []
+  wallet: []
+  effectsLedger: []
 --- !u!114 &32498620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,6 +325,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &32498625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 32498610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f93514639f2b243429b8c577e09beb8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inventory: {fileID: 0}
 --- !u!1 &77888206
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,7 +641,6 @@ GameObject:
   - component: {fileID: 248709894}
   - component: {fileID: 248709893}
   - component: {fileID: 248709901}
-  - component: {fileID: 248709902}
   m_Layer: 3
   m_Name: CollectibleMineral (1)
   m_TagString: Untagged
@@ -643,7 +660,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58abc2314d8e64e5d8a32f25fdef035e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachKey: 32
   cursorSegment: {fileID: 6623631449727110612, guid: 363e74862b7014b9595882e1d2819778, type: 3}
 --- !u!135 &248709894
 SphereCollider:
@@ -791,21 +807,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bd73e28afe804bc283dbe657f1c9d37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &248709902
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 248709892}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 366de8e007da24c3cac22bed01b7bc2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toBeam: {fileID: 0}
-  particle: {fileID: 6623631449727110612, guid: 363e74862b7014b9595882e1d2819778, type: 3}
-  amount: 5
+  itemOnAttach:
+    Type: CollectibleAsteroid
+  itemOnDettach:
+    Type: DropAsteroidItem
 --- !u!1 &269324109
 GameObject:
   m_ObjectHideFlags: 0
@@ -11472,7 +11477,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8fa6af32bc684acd86a99f9a4c4c895, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resources: []
+  wallet: []
+  effectsLedger: []
 --- !u!1 &973970550
 GameObject:
   m_ObjectHideFlags: 0
@@ -17859,7 +17865,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58abc2314d8e64e5d8a32f25fdef035e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attachKey: 32
   cursorSegment: {fileID: 6623631449727110612, guid: 363e74862b7014b9595882e1d2819778, type: 3}
 --- !u!114 &1977397806
 MonoBehaviour:
@@ -17873,6 +17878,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bd73e28afe804bc283dbe657f1c9d37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemOnAttach:
+    Type: CollectibleAsteroid
+  itemOnDettach:
+    Type: DropAsteroidItem
 --- !u!1 &1981102190
 GameObject:
   m_ObjectHideFlags: 0

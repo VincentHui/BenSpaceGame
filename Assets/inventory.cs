@@ -1,8 +1,34 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
+
+public static class ItemPouch
+{
+
+    public static readonly Dictionary<string, Item<GameObject>> pouch = new Dictionary<string, Item<GameObject>>()
+    {
+        ["CollectibleAsteroid"] = new Item<GameObject>()
+        {
+            Type = "CollectibleAsteroid",
+            Cost = new Dictionary<string, int>() { },
+            Effect = (obj) => {
+                return new Dictionary<string, int>()
+                {
+                    ["CollectibleWeightEffect"] = 1
+                };
+            }
+        },
+        ["DropAsteroidItem"] = new Item<GameObject>()
+        {
+            Type = "DropAsteroidItem",
+            Cost = new Dictionary<string, int>() { ["CollectibleAsteroid"]= 1 }
+        }
+
+    };
+}
 
 public static class inventoryExtenstions {
     public static void addInventory(this GameObject obj, string name, int amount, Action Effect = null) {
@@ -18,17 +44,31 @@ public static class inventoryExtenstions {
 
     }
 
+    public static void BuyItem(this GameObject obj, Item<GameObject> toBuy) {
+        var inventory = getInventory(obj);
+        var newInventory = Merchant.buy(toBuy,inventory);
+        if (!Merchant.inTheBlack(newInventory)) {
+            Debug.LogError("NOT ENOUGH TO BUY");
+            return;
+        }
+        setInventory(obj,Merchant.add(toBuy,newInventory));
+
+    }
+
     public static Dictionary<string, int> getInventory(this GameObject obj) {
-        return obj.GetComponent<inventory>()._inventory;
+        var inventory = obj.GetComponent<inventory>();
+        //if (inventory == null) {
+        //    inventory = obj.AddComponent<inventory>()._wallet;
+        //}
+        return inventory == null ? obj.AddComponent<inventory>()._wallet : inventory._wallet;
     }
 
     public static Dictionary<string, int> setInventory(this GameObject obj, Dictionary<string, int> toSet)
     {
-        return obj.GetComponent<inventory>()._inventory = toSet;
+        return obj.GetComponent<inventory>()._wallet = toSet;
     }
 
     public static void startTransaction(this GameObject obj,
-        Dictionary<string, InventoryValue> values,
         GameObject from,
         GameObject to) {
 
@@ -44,41 +84,56 @@ public static class inventoryExtenstions {
 
 
 
+
 public class inventory : MonoBehaviour, ISerializationCallbackReceiver
 {
-    public List<resourceSlot> resources = new List<resourceSlot>();
-    public Dictionary<string, int> _inventory = new Dictionary<string, int>();
+    public List<resourceSlot> wallet = new List<resourceSlot>();
+    public List<resourceSlot> effectsLedger = new List<resourceSlot>();
+    public Dictionary<string, int> _wallet = new Dictionary<string, int>();
+    public Dictionary<string, int> _effectsLedger = new Dictionary<string, int>();
 
     public void OnAfterDeserialize()
     {
-        _inventory = new Dictionary<string, int>();
+        _wallet = new Dictionary<string, int>();
 
         //var newWallet = new Dictionary<string, int>();
-        foreach (var slot in resources)
+        foreach (var slot in wallet)
         {
-            _inventory.Add(slot.key, slot.value);
+            _wallet.Add(slot.key, slot.value);
+        }
+        foreach (var slot in effectsLedger)
+        {
+            _effectsLedger.Add(slot.key, slot.value);
         }
     }
 
     public void OnBeforeSerialize()
     {
 
-        resources.Clear();
-        foreach (var kvp in _inventory)
+        wallet.Clear();
+        foreach (var kvp in _wallet)
         {
-            resources.Add(new resourceSlot {key = kvp.Key, value=kvp.Value });
+            wallet.Add(new resourceSlot {key = kvp.Key, value=kvp.Value });
+        }
+        effectsLedger.Clear();
+        foreach (var kvp in _effectsLedger)
+        {
+            effectsLedger.Add(new resourceSlot { key = kvp.Key, value = kvp.Value });
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        _oldInventory = _wallet;
     }
-
+    private Dictionary<string, int> _oldInventory;
     // Update is called once per frame
     void Update()
     {
-        
+        if (_oldInventory != _wallet) {
+            _oldInventory = _wallet;
+            _effectsLedger = Merchant.Effects<GameObject>(ItemPouch.pouch.Values.ToList(), _wallet, gameObject);
+        }
     }
 }

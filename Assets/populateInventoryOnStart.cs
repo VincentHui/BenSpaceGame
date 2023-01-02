@@ -3,13 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-[System.Serializable]
-public struct InventoryValue {
-    public int value;
-    public Action Effect; 
-};
-
 [System.Serializable]
 public struct resourceSlot { public string key; public int value; }
 

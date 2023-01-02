@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class CollectibleMineralCoordinator : MonoBehaviour
 {
-    rigidBodyFollower rope;
+    rigidBodyFollower rigidBodyFollower;
     tractorBeam beam;
+    public Item<GameObject> itemOnAttach = ItemPouch.pouch["CollectibleAsteroid"];
+    public Item<GameObject> itemOnDettach = ItemPouch.pouch["DropAsteroidItem"];
+
     // Start is called before the first frame update
     void Start()
     {
-        rope = GetComponent<rigidBodyFollower>();
+        rigidBodyFollower = GetComponent<rigidBodyFollower>();
         beam = GetComponent<tractorBeam>();
         gameObject.SubscribeBroker<GameObject>("ATTACH", (msg) => {
-            //Debug.Log("SUBSCRIBED ATTACH");
-            rope.toFollow = msg.What;
+            rigidBodyFollower.toFollow = msg.What;
             beam.AttachBeam(msg.What.transform);
-            //msg.Who.GetComponent<>();
+            msg.What.BuyItem(itemOnAttach);
+        });
+        gameObject.SubscribeBroker<GameObject>("DETTACH", (msg) => {
+            rigidBodyFollower.toFollow = null;
+            beam.DettachBeam();
+            msg.What.BuyItem(itemOnDettach);
         });
     }
 

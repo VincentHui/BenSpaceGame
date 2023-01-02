@@ -67,4 +67,33 @@ public class MerchantTests
         var lastEffectLedger = Merchant.Effects<float>(items, finalWallet, 0f);
         Assert.AreEqual(lastEffectLedger, new Dictionary<string, int>() { ["FIRE"] = 1 , ["ECHO"] = 2});
     }
+
+    [Test]
+    public void SimpleMerchantInTheBlackTests()
+    {
+
+        //var outputState = new List<string>();
+        var wallet = new Dictionary<string, int>() { ["silver"] = 10};
+        var items = new List<Item<float>> {
+            new Item<float>(){
+                Type= "ICE_SWORD",
+                Cost= new Dictionary<string, int>(){ ["silver"]=10 }
+            },
+            new Item<float>(){
+                Type = "FREE_ITEM",
+                Cost= new Dictionary<string, int>(){ }
+            }
+        };
+        var newWallet = Merchant.buy(items[0], wallet);
+        Assert.AreEqual(newWallet, new Dictionary<string, int> { ["silver"] = 0 });
+        var inTheBlackCheck = Merchant.inTheBlack(newWallet);
+        Assert.IsTrue(inTheBlackCheck);
+        newWallet = Merchant.buy(items[1], newWallet);
+        inTheBlackCheck = Merchant.inTheBlack(newWallet);
+        Assert.IsTrue(inTheBlackCheck);
+        var finalWallet = Merchant.buy(items[0], newWallet);
+        var inTheBlackCheckFail = Merchant.inTheBlack(finalWallet);
+        Assert.IsFalse(inTheBlackCheckFail);
+
+    }
 }

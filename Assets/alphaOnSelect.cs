@@ -38,7 +38,7 @@ public class alphaOnSelect : MonoBehaviour
 
         //scale.mass = 1;
         //scale.tension = 3;
-        gameObject.SubscribeBroker<GameObject>("SELECT", (sender) => {
+        gameObject.SubscribeSelect( (sender) => {
             //alpha.target = 1;
             foreach (var spring in alpha) {
                 spring.target = 1f;

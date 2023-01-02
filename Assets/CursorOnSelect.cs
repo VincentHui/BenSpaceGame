@@ -9,9 +9,14 @@ using static UnityEngine.GridBrushBase;
 public class CursorOnSelect : MonoBehaviour
 {
     ObjectPool<GameObject> pool;
-    public KeyCode attachKey;
+
     public GameObject cursorSegment;
     GameObject selector;
+
+    void SetSelected(bool value) {
+        pool.Active.ForEach(obj=>obj.SetActive(value));
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,40 +28,39 @@ public class CursorOnSelect : MonoBehaviour
             obj.SetActive(true);
         }
 
-        gameObject.SubscribeBroker<GameObject>("SELECT", (sender) => {
+        gameObject.SubscribeSelect((sender) => {
             selector = sender.What;
-            var points = gameObject.GetPointsOnCircle(5, 2).ToArray();
+            //var points = gameObject.GetPointsOnCircle(5, 2).ToArray();
             var objects = pool.Active;
-            for (int i = 0; i < 5; i++)
-            {
-                objects[i].SetActive(true);
-                objects[i].transform.position = points[i];
-            }
+            SetSelected(true);
         });
+
+        gameObject.SubscribeAttach(gameObject, (obj) => {
+            SetSelected(false);
+        });
+
+        //gameObject.SubscribeBroker("ATTACH", () => {
+
+        //});
     }
 
     // Update is called once per frame
     void Update()
     {
         if (!selector) return;
+        
         var points = gameObject.GetPointsOnCircle(5, 2).ToArray();
         var objects = pool.Active;
+        for (int i = 0; i < 5; i++)
+        {
+            objects[i].transform.position = points[i];
+        }
+
         if (Vector3.Distance(selector.transform.position, transform.position) > getSelectables.selectionRadius)
         {
             selector = null;
-            for (int i = 0; i < 5; i++)
-            {
-                objects[i].SetActive(false);
-            }
+            SetSelected(false);
             return;
         }
-        for (int i=0; i < 5; i++) {
-            objects[i].transform.position = points[i];
-        }
-        if (Input.GetKeyDown(attachKey)) {
-            //Debug.Log("ATTACH" + gameObject.name);
-            gameObject.PublishBroker("ATTACH", selector);
-        }
-        
     }
 }

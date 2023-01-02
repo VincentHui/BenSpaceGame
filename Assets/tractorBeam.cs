@@ -16,6 +16,14 @@ public class tractorBeam : MonoBehaviour
         });
         toBeam = toAttach;
     }
+
+    public void DettachBeam()
+    {
+        active.ForEach(obj => {
+            obj.SetActive(false);
+        });
+        toBeam = null;
+    }
     // Start is called before the first frame update
     void Start()
     {

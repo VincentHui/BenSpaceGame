@@ -2,18 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class LerpExtension {
-
-    public static float LerpDuration(this float startValue, float timeElapsed, float endValue, float lerpDuration) {
-        return (timeElapsed < lerpDuration) ? Mathf.Lerp(startValue, endValue, timeElapsed / lerpDuration) : endValue;
-    }
-
-    public static Vector3 LerpDuration(this Vector3 startValue, Vector3 endValue, float timeElapsed, float lerpDuration)
-    {
-        return (timeElapsed < lerpDuration) ? Vector3.Lerp(startValue, endValue, timeElapsed / lerpDuration) : endValue;
-    }
-}
-
 public class DustOnCollision : ManualParticleSystemBase
 {
     //public GameObject DustObject;
