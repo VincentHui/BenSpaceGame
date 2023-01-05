@@ -106,7 +106,7 @@ public class steerableBase : MonoBehaviour {
     {
         while (_consumableEnem.MoveNext())
         {
-            temp = temp + (_consumableEnem.Current(this));
+            temp = temp + (_consumableEnem.Current(this)) * Time.deltaTime * timeConstant;
             _ConsumablesToRemove.Add(_consumableEnem.Current);
         }
         foreach (var item in _ConsumablesToRemove)

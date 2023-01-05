@@ -5,9 +5,11 @@ using UnityEngine;
 public class frameLimiter : MonoBehaviour
 {
     public int frameRate = 45;
+    public bool force = false;
     void Awake()
     {
 #if UNITY_EDITOR
+     if(!force)return;
      QualitySettings.vSyncCount = 0;  // VSync must be disabled
      Application.targetFrameRate = frameRate;
 #endif
