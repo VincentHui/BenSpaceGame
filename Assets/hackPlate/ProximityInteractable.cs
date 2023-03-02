@@ -22,43 +22,44 @@ public static class PoximityInteractionExtension
         SELECT,
         UNSELECT
     }
-    public static readonly string CollectibleTagName = nameof(ProximityCollectible);
+    public static readonly string CollectibleTagName = nameof(ProximitySelectible);
     public static void SubscribeSelect(this GameObject obj, Action<MessagePayload<GameObject>> _selectCallback)
     {
         obj.SubscribeBroker<GameObject>("SELECT", _selectCallback);
     }
 
     public static void SubscribeProximityEvent(this GameObject obj, Action<GameObject, ProximityEvent> publish) {
-        var collectible = obj.GetComponent<ProximityCollectible>();
-        collectible = collectible == null ? obj.AddComponent<ProximityCollectible>() : collectible;
+        var collectible = obj.GetComponent<ProximitySelectible>();
+        collectible = collectible == null ? obj.AddComponent<ProximitySelectible>() : collectible;
         collectible.addProximityCallback(publish);
     }
 
 
 }
-public class ProximityCollector : MonoBehaviour
+public class ProximitySelector : MonoBehaviour
 {
     public readonly string tagName = PoximityInteractionExtension.CollectibleTagName;
     public GameObject selected;
+    public List<GameObject> selectionExclusion = new List<GameObject>();
 
-    void Update()
+    void FixedUpdate()
     {
         var colliders = Physics.OverlapSphere(transform.position, PoximityInteractionExtension.Radius);
-        var Selected = colliders.Where((c) => c.gameObject.tag == tagName).OrderBy((c) => Vector3.Distance(transform.position, c.transform.position)).ToList();
+        var Selected = colliders.Where((c) => c.gameObject.tag == tagName && selectionExclusion.Contains(c.gameObject) ==false).OrderBy((c) => Vector3.Distance(transform.position, c.transform.position)).ToList();
         selected = Selected.Count > 0 ? Selected[0].gameObject : null;
         if (selected == null) return;
-        selected.PublishBroker<ProximityCollector>("SELECT", this);
+        selected.PublishBroker<ProximitySelector>("SELECT", this);
 
 
     }
 }
 
-public class ProximityCollectible : MonoBehaviour
+public class ProximitySelectible : MonoBehaviour
 {
     public readonly string tagName = PoximityInteractionExtension.CollectibleTagName;
     private List<Action<GameObject, ProximityEvent>> ProximityCallbacks = new List<Action<GameObject, ProximityEvent>>();
     public void addProximityCallback(Action<GameObject, ProximityEvent> callback) => ProximityCallbacks.Add(callback);
-    private ProximityCollector collector;
+    private ProximitySelector collector;
 
     void FireCallBack(GameObject sender, ProximityEvent _event) => ProximityCallbacks.ForEach(action => action(sender, _event));
 
@@ -72,7 +73,7 @@ public class ProximityCollectible : MonoBehaviour
             //Collector = null;
             FireCallBack(gameObject, ProximityEvent.DETTACH);
         });
-        gameObject.SubscribeBroker<ProximityCollector>("SELECT", (m) =>
+        gameObject.SubscribeBroker<ProximitySelector>("SELECT", (m) =>
         {
             if (collector == null) {
                 collector = m.What;

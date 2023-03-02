@@ -352,6 +352,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selected: {fileID: 0}
+  selectionExclusion: []
+  attachKey: 32
+  dettachKey: 8
+  attached: []
 --- !u!1 &77888206
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,16 +14,19 @@ public class CollectibleMineralCoordinator : MonoBehaviour
     {
         rigidBodyFollower = GetComponent<rigidBodyFollower>();
         beam = GetComponent<tractorBeam>();
-        //gameObject.SubscribeBroker<GameObject>("ATTACH", (msg) => {
-        //    rigidBodyFollower.toFollow = msg.What;
-        //    beam.AttachBeam(msg.What.transform);
-        //    msg.What.BuyItem(itemOnAttach);
-        //});
-        //gameObject.SubscribeBroker<GameObject>("DETTACH", (msg) => {
-        //    rigidBodyFollower.toFollow = null;
-        //    beam.DettachBeam();
-        //    msg.What.BuyItem(itemOnDettach);
-        //});
+        gameObject.SubscribeBroker<GameObject>("ATTACH", (msg) =>
+        {
+            Debug.Log("ATTACH");
+            rigidBodyFollower.toFollow = msg.What;
+            beam.AttachBeam(msg.What.transform);
+            msg.What.BuyItem(itemOnAttach);
+        });
+        gameObject.SubscribeBroker<GameObject>("DETTACH", (msg) =>
+        {
+            rigidBodyFollower.toFollow = null;
+            beam.DettachBeam();
+            msg.What.BuyItem(itemOnDettach);
+        });
     }
 
     // Update is called once per frame
